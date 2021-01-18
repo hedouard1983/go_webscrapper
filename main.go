@@ -1,36 +1,44 @@
 package main
-import(
-        "fmt"
-        "net/http"
-		// "io/ioutil"
-		"io"
-		"os"
+
+import (
+	"fmt"
+	"net/http"
+
+	// "io/ioutil"
+	"io"
+	"os"
 )
-// TODO: Add input for arguements 
-func main(){
-       //Make GET request
-		f,_ := os.Create("./test.html")  
-	   	resp,err := http.Get("http://www.cnn.com")
-       	Check(err)
 
-       //close the connection stream
-       defer resp.Body.Close()
+// TODO: Add input for arguements
+func main() {
+	// input for site
+	fmt.Println("Enter Website to scrape:")
+	var site string
+	fmt.Scanln(&site)
 
-       //get the bytes acquired
-	   //resultsInBytes,err := ioutil.ReadAll(resp.Body)
-	   resultsInBytes,err := io.Copy(f,resp.Body)
-       Check(err)
+	//Make GET request
+	f, _ := os.Create("./test.html")
+	resp, err := http.Get(site)
+	Check(err)
 
-       //convert into a readable format
-       results := string(resultsInBytes)
+	//close the connection stream
+	defer resp.Body.Close()
 
-       //Display website
-       fmt.Println(results)
+	//get the bytes acquired
+	//resultsInBytes,err := ioutil.ReadAll(resp.Body)
+	resultsInBytes, err := io.Copy(f, resp.Body)
+	Check(err)
+
+	//convert into a readable format
+	results := string(resultsInBytes)
+
+	//Display website
+	fmt.Println(results)
 }
 
 //error handler function
-func Check(err error){
-       if err!= nil{
-            fmt.Println(err)
-       }
+func Check(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }
